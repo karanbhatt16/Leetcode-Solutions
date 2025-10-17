@@ -1,6 +1,6 @@
 class MyHashSet {
 public:
-    set<int> s;
+    unordered_set<int> s;
     MyHashSet() {
         
     }
