@@ -1,9 +1,9 @@
 class Solution {
 public:
-    void solve(int idx, vector<int>& candidates, int target, set<vector<int>>& ans, vector<int>& v,int sum){
+    void solve(int idx, vector<int>& candidates, int target, vector<vector<int>>& ans, vector<int>& v,int sum){
         if(sum>target) return;
         if(sum==target){
-            ans.insert(v);
+            ans.push_back(v);
             return;
         }
         for(int i=idx;i<candidates.size();i++){
@@ -16,10 +16,9 @@ public:
         return;
     }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        set<vector<int>> ans;
+        vector<vector<int>> ans;
         vector<int> v;
         solve(0,candidates,target,ans,v,0);
-        vector<vector<int>> result(ans.begin(),ans.end());
-        return result;
+        return ans;
     }
 };
