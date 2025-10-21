@@ -12,9 +12,11 @@ void solve(vector<int>& candidates, int target, int idx, set<vector<int>>& ans, 
         if(i!=idx && candidates[i]==candidates[i-1]){
             continue;
         }
+        if(target-candidates[i]<0) break;
         v.push_back(candidates[i]);
         solve(candidates,target-candidates[i],i+1,ans,v);
         v.pop_back();
+
     }
     return;
 }
