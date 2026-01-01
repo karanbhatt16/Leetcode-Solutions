@@ -11,12 +11,11 @@
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        int start=p->val;
-        int end=q->val;
-        while(true){
-            if(root==NULL) return NULL;
-            if(root->val<min(start,end)) root=root->right;
-            else if(root->val>max(start,end)) root=root->left;
+        int start=min(p->val,q->val);
+        int end=max(p->val,q->val);
+        while(root){
+            if(root->val<start) root=root->right;
+            else if(root->val>end) root=root->left;
             else return root;
         }
         return root;
