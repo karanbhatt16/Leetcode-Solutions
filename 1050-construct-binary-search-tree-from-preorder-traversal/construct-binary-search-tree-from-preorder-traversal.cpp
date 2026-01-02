@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    int find_index(vector<int>preorder, int start, int end){
+    int find_index(vector<int>& preorder, int start, int end){
         int ele=preorder[start];
         int index=start;
         for(int i=start; i<=end;i++){
@@ -31,10 +31,6 @@ public:
         return root;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        TreeNode* root=new TreeNode(preorder[0]);
-        int index=find_index(preorder, 0, preorder.size()-1);
-        root->left=solve(preorder, 1, index);
-        root->right=solve(preorder, index+1, preorder.size()-1);
-        return root;
+        return solve(preorder, 0, preorder.size()-1);
     }
 };
