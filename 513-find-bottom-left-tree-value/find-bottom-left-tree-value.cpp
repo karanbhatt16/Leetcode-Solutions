@@ -11,15 +11,18 @@
  */
 class Solution {
 public:
-    void solve(TreeNode* root, int level, vector<int>& ans){
+    void solve(TreeNode* root, int level, int& ans, int&size){
         if(root==NULL) return;
-        if(ans.size()==level) ans.push_back(root->val);
-        solve(root->left, level+1, ans);
-        solve(root->right, level+1, ans);
+        if(size==level){
+            size++;
+            ans=root->val;
+        }
+        solve(root->left, level+1, ans, size);
+        solve(root->right, level+1, ans, size);
     }
     int findBottomLeftValue(TreeNode* root) {
-        vector<int> ans;
-        solve(root, 0, ans);
-        return ans[ans.size()-1];
+        int ans=0, size=0;
+        solve(root, 0, ans, size);
+        return ans;
     }
 };
