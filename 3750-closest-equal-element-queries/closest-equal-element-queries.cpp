@@ -12,14 +12,14 @@ public:
             }
             mp[nums[i % n]] = i % n;
         }
-        mp.clear();
+        map<int, int> mp2;
         for (int i = 2 * n - 1; i >= 0; i--) {
-            if (mp.find(nums[i % n]) != mp.end()) {
-                int ans = mp[nums[i % n]] - i;
+            if (mp2.find(nums[i % n]) != mp2.end()) {
+                int ans = mp2[nums[i % n]] - i;
                 if (ans < 0) ans += n;
-                right[mp[nums[i % n]]] = min(ans, right[mp[nums[i % n]]]);
+                right[mp2[nums[i % n]]] = min(ans, right[mp2[nums[i % n]]]);
             }
-            mp[nums[i % n]] = i % n;
+            mp2[nums[i % n]] = i % n;
         }
         for (int i = 0; i < n; i++) {
             if (left[i] == INT_MAX && right[i] == INT_MAX) {
