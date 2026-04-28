@@ -1,42 +1,47 @@
 class Solution {
 private:
-    vector<int> minimum(vector<int>& heights, int start, int end) {
-        int minidx = start;
-        vector<int> ans;
-        for (int i = start; i <= end; i++) {
-            if (heights[i] < heights[minidx]) {
-                minidx = i;
+
+    vector<int> nse(vector<int>& heights) {
+        stack<int> st;
+        int n = heights.size();
+        vector<int> ans(n);
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.empty() && heights[st.top()] >= heights[i]) {
+                st.pop();
             }
-        }
-        for (int i = start; i <= end; i++) {
-            if (heights[i] == heights[minidx]) {
-                ans.push_back(i);
-            }
+            if (st.empty()) ans[i] = n;
+            else ans[i] = st.top();
+
+            st.push(i);
         }
         return ans;
     }
-    int solve(vector<int>& heights, int start, int end) {
-        if (start > end) {
-            return 0;
+
+    vector<int> pse(vector<int>& heights) {
+        stack<int> st;
+        int n = heights.size();
+        vector<int> ans(n);
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && heights[st.top()] >= heights[i]) {
+                st.pop();
+            }
+            if (st.empty()) ans[i] = -1;
+            else ans[i] = st.top();
+
+            st.push(i);
         }
-        if (start == end) {
-            return heights[start];
-        }
-        vector<int> mins = minimum(heights, start, end);
-        int maximum = 0;
-        int copy = start;
-        for (int i = 0; i < mins.size(); i++) {
-            int ans = solve(heights, start, mins[i] - 1);
-            maximum = max(maximum, ans);
-            start = mins[i] + 1;
-        }
-        int ans = solve(heights, start, end);
-        maximum = max(maximum, ans);
-        return max(maximum, heights[mins[0]] * (end - copy + 1));
+        return ans;
     }
 public:
     int largestRectangleArea(vector<int>& heights) {
         int n = heights.size();
-        return solve(heights, 0, n - 1);
+        vector<int> left = pse(heights);
+        vector<int> right = nse(heights);
+        int maxarea = 0;
+        for (int i = 0; i < n; i++) {
+            int area = (right[i] - left[i] - 1) * heights[i];
+            maxarea = max(maxarea, area);
+        }
+        return maxarea;
     }
 };
