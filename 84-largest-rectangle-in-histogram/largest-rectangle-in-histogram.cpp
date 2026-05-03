@@ -4,20 +4,25 @@ public:
         int n = heights.size();
         stack<int> st;
         int ans = 0;
-        vector<int> pse;
+        int pse;
         for (int i = 0; i < n; i++) {
             while(!st.empty() && heights[st.top()] >= heights[i]) {
-                ans = max(ans, heights[st.top()] * (i - pse[st.top()] - 1));
+                int nse = i;
+                int curr = heights[st.top()];
                 st.pop();
+                int pse = st.empty() ? -1 : st.top();
+                ans = max(ans, curr * (nse - pse - 1));
             }
 
-            if (st.empty()) pse.push_back(-1);
-            else pse.push_back(st.top());
+            if (st.empty()) pse = -1;
+            else pse = st.top();
             st.push(i);
         }
         while (!st.empty()) {
-            ans = max(ans, heights[st.top()] * (n - 1 - pse[st.top()]));
+            int curr = heights[st.top()];
             st.pop();
+            int pse = st.empty() ? -1 : st.top();
+            ans = max(ans, curr * (n - pse - 1));
         }
         return ans;
     }
