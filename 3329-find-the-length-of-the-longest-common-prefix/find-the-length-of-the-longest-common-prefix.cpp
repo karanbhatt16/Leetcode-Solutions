@@ -22,7 +22,6 @@ public:
         for (int i = 0; i < arr2.size(); i++) {
             int num = arr2[i];
             while (num != 0) {
-                if (num < pow(10, maxsize)) break;
                 if (s.find(num) != s.end()) {
                     maxsize = max(maxsize, sizeofnum(num));
                     break;
