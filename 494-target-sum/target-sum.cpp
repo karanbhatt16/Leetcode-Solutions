@@ -1,38 +1,34 @@
 class Solution {
 private:
-    int solve(vector<int>& nums, int target, int i, vector<vector<int>>& dp) {
+    int T;
+    int totalSum;
+    int solve(vector<int>& nums, int sum, int i, vector<vector<int>>& dp) {
 
         if (i == -1) {
-            if (target == 0) {
+            if (totalSum - 2 * sum == T) {
                 return 1;
             }
             return 0;
         }
 
-        if (target < 0) {
-            if (dp[i][target + 2001] != -1) {
-                return dp[i][target + 2001];
-            }
-        } else {
-            if (dp[i][target] != -1) {
-                return dp[i][target];
-            }
+        if (dp[i][sum] != -1) {
+            return dp[i][sum];
         }
 
-        int positive = solve(nums, target + nums[i], i - 1, dp);
-        int negative = solve(nums, target - nums[i], i - 1, dp);
+        int pick = solve(nums, sum + nums[i], i - 1, dp);
+        int notpick = solve(nums, sum, i - 1, dp);
 
-        if (target < 0) {
-            dp[i][target + 2001] = positive + negative;
-        } else {
-            dp[i][target] = positive + negative;
-        }
-        return positive + negative;
+        return dp[i][sum] = pick + notpick;
     }
 public:
     int findTargetSumWays(vector<int>& nums, int target) {
         int n = nums.size();
-        vector<vector<int>> dp(n, vector<int> (1e5, -1));
-        return solve(nums, target, n - 1, dp);
+        T = target;
+        totalSum = 0;
+        for (int i = 0; i < n; i++) {
+            totalSum += nums[i];
+        }
+        vector<vector<int>> dp(n, vector<int> (totalSum + 1, -1));
+        return solve(nums, 0, n - 1, dp);
     }
 };
