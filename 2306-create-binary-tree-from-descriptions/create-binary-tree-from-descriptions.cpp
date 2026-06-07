@@ -14,7 +14,7 @@ public:
     TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
         unordered_map<int, int> left;
         unordered_map<int, int> right;
-        set<int> s;
+        unordered_set<int> s;
 
         int n = descriptions.size();
 
