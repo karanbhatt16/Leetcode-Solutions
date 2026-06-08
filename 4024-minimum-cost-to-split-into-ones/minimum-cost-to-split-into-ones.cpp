@@ -11,7 +11,13 @@ private:
         }
 
         int minimumCost = INT_MAX;
-        for (int i = 1; i < n; i++) {
+        int end;
+        if (n % 2 == 0) {
+            end = n / 2 + 1;
+        } else {
+            end = (n + 1) / 2;
+        }
+        for (int i = 1; i < end; i++) {
             int cost = (i * (n - i)) + solve(i, dp) + solve(n - i, dp);
             minimumCost = min(minimumCost, cost);
         }
