@@ -14,7 +14,7 @@ private:
             return 1 + solve(text1, text2, idx1 - 1, idx2 - 1, dp);
         }
 
-        int i1 = idx1, i2 = idx2;
+        int i1 = idx1 - 1, i2 = idx2 - 1;
 
         while (i1 >= 0 && text1[i1] == text1[idx1]) {
             i1--;
@@ -30,7 +30,9 @@ private:
     }
 public:
     int longestCommonSubsequence(string text1, string text2) {
-        vector<vector<int>> dp(text1.length(), vector<int> (text2.length(), -1));
-        return solve(text1, text2, text1.length() - 1, text2.length() - 1, dp);
+        int size1 = text1.length();
+        int size2 = text2.length();
+        vector<vector<int>> dp(size1, vector<int> (size2, -1));
+        return solve(text1, text2, size1 - 1, size2 - 1, dp);
     }
 };
