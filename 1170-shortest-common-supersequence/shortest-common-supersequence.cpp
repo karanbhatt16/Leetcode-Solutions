@@ -21,15 +21,15 @@ public:
 
         while (true) {
             if (str1[i - 1] == str2[j - 1]) {
-                s = str1[i - 1] + s;
+                s += str1[i - 1];
                 i--;
                 j--;
             } else {
                 if (dp[i - 1][j] > dp[i][j - 1]) {
-                    s = str1[i - 1] + s;
+                    s += str1[i - 1];
                     i--;
                 } else {
-                    s = str2[j - 1] + s;
+                    s += str2[j - 1];
                     j--;
                 }
             }
@@ -39,13 +39,15 @@ public:
         }
 
         while (i > 0) {
-            s = str1[i - 1] + s;
+            s += str1[i - 1];
             i--;
         }
         while (j > 0) {
-            s = str2[j - 1] + s;
+            s += str2[j - 1];
             j--;
         }
+
+        reverse(s.begin(), s.end());
 
         return s;
 
