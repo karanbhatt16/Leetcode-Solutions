@@ -1,6 +1,5 @@
 class Solution {
 private:
-    int MOD = 1e9 + 7;
     int heightOfTree(unordered_map<int, vector<int>>& mp, int n) {
         queue<int> q;
         q.push(1);
@@ -26,18 +25,20 @@ private:
         }
         return count - 1;
     }
+    long long powmod(long long base, long long exp) {
+        long long result = 1;
+        const long long MOD = 1e9 + 7;
 
-    long long solve(int n, int parity, vector<vector<int>>& dp) {
-        if (n == 0) {
-            return 1 & parity;
-        }
-        if (dp[n][parity] != -1) {
-            return dp[n][parity];
-        }
-        int a = solve(n - 1, parity ^ 1, dp);
-        int b = solve(n - 1, parity, dp);
+        while (exp > 0) {
+            if (exp & 1) {
+                result = (result * base) % MOD;
+            }
 
-        return dp[n][parity] = (a + b) % MOD;
+            base = (base * base) % MOD;
+            exp >>= 1;
+        }
+
+        return result;
     }
 public:
     int assignEdgeWeights(vector<vector<int>>& edges) {
@@ -51,9 +52,7 @@ public:
         }
 
         int height = heightOfTree(mp, n);
-        
-        vector<vector<int>> dp(height + 1, vector<int> (2, -1));
 
-        return solve(height, 0, dp);
+        return powmod(2, height - 1);
     }
 };
