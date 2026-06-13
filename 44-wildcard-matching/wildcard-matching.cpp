@@ -2,19 +2,20 @@ class Solution {
 private:
     bool solve(string& s, string& p, int i, int j, vector<vector<int>>& dp) {
 
-        if (i < 0 || j < 0) {
-            if (i < 0 && j < 0) {
-                return true;
-            }
-            if (i < 0) {
-                while (j >= 0 && p[j] == '*') {
-                    j--;
-                }
-                if (j < 0) {
-                    return true;
-                }
-            }
+        if (i < 0 && j < 0) {
+            return true;
+        }
+        if (i >= 0 && j < 0) {
             return false;
+        }
+        if (i < 0 && j >= 0) {
+            while (j >= 0) {
+                if (p[j] != '*') {
+                    return false;
+                }
+                j--;
+            }
+            return true;
         }
 
         if (dp[i][j] != -1) {
@@ -24,13 +25,7 @@ private:
         if (p[j] == '?' || s[i] == p[j]) {
             return dp[i][j] = solve(s, p, i - 1, j - 1, dp);
         } else if (p[j] == '*'){
-            int k = 0;
-            while (k <= i + 1 && !solve(s, p, i - k, j - 1, dp)) {
-                k++;
-            }
-            if (k <= i + 1) {
-                return dp[i][j] = true;
-            }
+            return dp[i][j] = solve(s, p, i, j - 1, dp) | solve(s, p, i - 1, j, dp);
         }
         return dp[i][j] = false;
     }
