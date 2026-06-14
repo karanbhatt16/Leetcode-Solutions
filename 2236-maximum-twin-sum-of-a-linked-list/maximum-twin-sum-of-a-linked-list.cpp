@@ -9,27 +9,20 @@
  * };
  */
 class Solution {
+private:
+    int solve(ListNode* head, ListNode* node, ListNode* &head2) {
+        if (node == NULL) return 0;
+        head2 = head->next;
+        int x = solve(head->next, node->next->next, head2);
+        int ans = max(x, head->val + head2->val);
+        head2 = head2->next;
+        return ans;
+    }
 public:
     int pairSum(ListNode* head) {
         ListNode* node = head;
         ListNode* head2 = head;
-        int n = 0;
-        while (node) {
-            node = node->next->next;
-            head2 = head2->next;
-            n++;
-        }
+        return solve(head, head2, head2);
 
-        vector<int> sum(n);
-        node = head;
-
-        for (int i = 0; i < n; i++) {
-            sum[i] += node->val;
-            sum[n - i - 1] += head2->val;
-            node = node->next;
-            head2 = head2->next;
-        }
-
-        return *max_element(sum.begin(), sum.end());
     }
 };
