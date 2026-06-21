@@ -1,30 +1,59 @@
 class Solution {
 public:
-    int maxBuilding(int num, vector<vector<int>>& r) {
-        r.push_back({1, 0});
-        sort(r.begin(), r.end());
-        int n = r.size();
+    int maxBuilding(int n, vector<vector<int>>& restrictions) {
+        sort(restrictions.begin(), restrictions.end(), [] (const vector<int>& a, const vector<int>& b) {
+            return a[0] < b[0];
+        });
+        if (restrictions.size() == 0 || restrictions[0][0] != 1) {
+            restrictions.insert(restrictions.begin(), {1, 0});
+        }
+        if (restrictions.size() == 0 || restrictions[restrictions.size() - 1][0] != n) {
+            restrictions.push_back({n, n - 1});
+        }
 
-        for (int i = 1; i < n; i++)
-            r[i][1] = yCap(r[i - 1], r[i]);
+        int m = restrictions.size();
 
-        for (int i = n - 2; i >= 0; i--)
-            r[i][1] = yCap(r[i + 1], r[i]);
+        for (int i = 1; i < m; i++) {
+            restrictions[i][1] = min(
+                restrictions[i][1],
+                restrictions[i - 1][1] + restrictions[i][0] - restrictions[i - 1][0]
+            );
+        }
 
-        int res = 0;
-        for (int i = 1; i < n; i++)
-            res = max(res, yPeak(r[i - 1], r[i]));
+        for (int i = m - 2; i >= 0; i--) {
+            restrictions[i][1] = min(
+                restrictions[i][1],
+                restrictions[i + 1][1] + restrictions[i + 1][0] - restrictions[i][0]
+            );
+        }
 
-        return max(res, r[n - 1][1] + num - r[n - 1][0]);
-    }
+        int start = 1;
+        int height = 0;
+        int maxheight = 0;
 
-    int yCap(vector<int>& l, vector<int>& r) {
-        int x1 = l[0], y1 = l[1], x2 = r[0], y2 = r[1];
-        return min(y2, y1 + abs(x2 - x1));
-    }
+        for (auto it : restrictions) {
+            int newHeight = height + (it[0] - start);
+            if (newHeight <= it[1]) {
+                start = it[0];
+                height = newHeight;
+                maxheight = max(maxheight, height);
+            } else {
+                if (it[1] >= height) {
+                    start += (it[1] - height);
+                    int h = it[1] + (it[0] - start) / 2;
+                    maxheight = max(maxheight, h);
+                } else {
+                    int end = it[0] - (height - it[1]);
+                    int h = height + (end - start) / 2;
+                    maxheight = max(maxheight, h);
+                }
+                start = it[0];
+                height = it[1];
+            }
+        }
+        int newheight = (n - start) + height;
+        maxheight = max(maxheight, newheight);
 
-    int yPeak(vector<int>& l, vector<int>& r) {
-        int x1 = l[0], y1 = l[1], x2 = r[0], y2 = r[1];
-        return (y1 + y2 + x2 - x1) >> 1;
+        return maxheight;
     }
 };
