@@ -4,6 +4,9 @@ private:
         if (i == j) {
             return nums[j];
         }
+        if (dp[i][j][x] != -1) {
+            return dp[i][j][x];
+        }
         if (x) {
             int a = nums[i] + solve(nums, i + 1, j, !x, dp);
             int b = nums[j] + solve(nums, i, j - 1, !x, dp);
