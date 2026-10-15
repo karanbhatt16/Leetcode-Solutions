@@ -1,26 +1,27 @@
 class Solution {
 public:
     int maxSum(vector<int>& nums, int k) {
-        vector<int> b(30, 0);
-        long long ans = 0;
+        vector<int> bits(32, 0);
         int n = nums.size();
-        long long MOD = 1e9 + 7;
+        int MOD = 1e9 + 7;
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 30; j++) {
-                if (nums[i] & (1 << j)) b[j]++;
+            for (int j = 0; j < 32; j++) {
+                if ((nums[i] & (1 << j)) != 0) bits[j]++; 
             }
         }
 
-        while (k-- > 0) {
-            long long x = 0;
-            for (int i = 0; i < 30; i++) {
-                if (b[i] > 0) {
-                    x |= 1LL << i;
-                    b[i]--;
+        long long ans = 0;
+        while (k--) {
+            long long val = 0;
+            for (int i = 0; i < 32; i++) {
+                if (bits[i] > 0) {
+                    bits[i]--;
+                    val += (1 << i);
                 }
             }
-            ans = (ans + x * x) % MOD;
+            ans = (ans + val * val) % MOD;
+            cout << val << " ";
         }
-        return (int) ans;
+        return (int)ans;
     }
 };
